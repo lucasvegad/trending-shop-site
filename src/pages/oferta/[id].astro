@@ -40,12 +40,35 @@ const past = history.slice(1);
 const isActive = current.published_date === overallLatestDate;
 
 const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+
+const pageDescription = `${current.title}: ${current.discount_pct}% OFF, ${money(current.price_after)} en Mercado Libre Argentina.`;
+const canonicalPath = `/oferta/${current.product_id}`;
+const pageUrl = new URL(canonicalPath, Astro.site).toString();
+
+const productJsonLd = {
+  '@context': 'https://schema.org/',
+  '@type': 'Product',
+  name: current.title,
+  ...(current.image_url && { image: [current.image_url] }),
+  description: pageDescription,
+  sku: current.product_id,
+  offers: {
+    '@type': 'Offer',
+    url: pageUrl,
+    priceCurrency: 'ARS',
+    price: current.price_after,
+    availability: isActive ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+  },
+};
+// Escapa "<" para que un título con "</script>" no rompa el tag del JSON-LD.
+const productJsonLdString = JSON.stringify(productJsonLd).replace(/</g, '\\u003c');
 ---
 <Base
   title={`${current.title} — Trending Shop`}
-  description={`${current.title}: ${current.discount_pct}% OFF, ${money(current.price_after)} en Mercado Libre Argentina.`}
-  canonicalPath={`/oferta/${current.product_id}`}
+  description={pageDescription}
+  canonicalPath={canonicalPath}
 >
+  <script type="application/ld+json" set:html={productJsonLdString} />
   <a href="/" class="back-link">← Volver a las ofertas</a>
   <h1>{current.title}</h1>
   {current.image_url && <img src={current.image_url} alt={current.title} class="product-image" />}
