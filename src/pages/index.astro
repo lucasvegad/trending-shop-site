@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import ofertasData from '../data/ofertas.json';
+
+const offers = ofertasData.offers as Array<{
+  product_id: string;
+  title: string;
+  image_url: string | null;
+  discount_pct: number;
+  price_before: number;
+  price_after: number;
+  installments_text: string | null;
+  rating: number | null;
+  sold_text: string | null;
+  affiliate_link: string;
+  trending: boolean;
+  published_date: string;
+}>;
+
+const latestDate = offers[0]?.published_date;
+const todayOffers = offers.filter((o) => o.published_date === latestDate);
+
+const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+---
+<Base
+  title="Trending Shop — Ofertas de Mercado Libre Argentina"
+  description="Ofertas reales con descuento verificado de Mercado Libre Argentina, actualizadas todos los días."
+  noindex={true}
+>
+  <h1>Ofertas de hoy{latestDate ? ` (${latestDate})` : ''}</h1>
+  {todayOffers.length === 0 && <p>Todavía no hay ofertas publicadas.</p>}
+  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+    {todayOffers.map((o) => (
+      <a href={`/oferta/${o.product_id}`} style="text-decoration: none; color: inherit; border: 1px solid #e2e2e2; border-radius: 12px; padding: 1rem; display: block; background: white;">
+        {o.image_url && <img src={o.image_url} alt={o.title} style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px;" />}
+        <p style="font-weight: 700; margin: 0.5rem 0 0.25rem;">{o.title}</p>
+        <p style="margin: 0;">
+          <span style="color: #FF6316; font-weight: 800; font-size: 1.1rem;">{money(o.price_after)}</span>
+          {' '}<span style="text-decoration: line-through; color: #888; font-size: 0.85rem;">{money(o.price_before)}</span>
+        </p>
+        <p style="margin: 0.25rem 0 0; color: #FF6316; font-weight: 700;">{o.discount_pct}% OFF</p>
+      </a>
+    ))}
+  </div>
+</Base>

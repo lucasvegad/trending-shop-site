@@ -1,0 +1,88 @@
+---
+import Base from '../../layouts/Base.astro';
+import ofertasData from '../../data/ofertas.json';
+
+type Offer = {
+  product_id: string;
+  title: string;
+  image_url: string | null;
+  discount_pct: number;
+  price_before: number;
+  price_after: number;
+  installments_text: string | null;
+  rating: number | null;
+  sold_text: string | null;
+  affiliate_link: string;
+  trending: boolean;
+  published_date: string;
+};
+
+const allOffers = ofertasData.offers as Offer[];
+const overallLatestDate = allOffers[0]?.published_date;
+
+export function getStaticPaths() {
+  const allOffers = ofertasData.offers as Offer[];
+  const byProduct = new Map<string, Offer[]>();
+  for (const o of allOffers) {
+    const list = byProduct.get(o.product_id) ?? [];
+    list.push(o);
+    byProduct.set(o.product_id, list);
+  }
+  return Array.from(byProduct.entries()).map(([product_id, history]) => ({
+    params: { id: product_id },
+    props: { history },
+  }));
+}
+
+const { history } = Astro.props as { history: Offer[] };
+const current = history[0];
+const past = history.slice(1);
+const isActive = current.published_date === overallLatestDate;
+
+const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+---
+<Base
+  title={`${current.title} — Trending Shop`}
+  description={`${current.title}: ${current.discount_pct}% OFF, ${money(current.price_after)} en Mercado Libre Argentina.`}
+  canonicalPath={`/oferta/${current.product_id}`}
+>
+  <a href="/" style="color: #313748;">← Volver a las ofertas</a>
+  <h1>{current.title}</h1>
+  {current.image_url && <img src={current.image_url} alt={current.title} style="max-width: 320px; width: 100%; border-radius: 12px;" />}
+
+  {!isActive && (
+    <p style="background: #FFF3E0; border: 1px solid #FF6316; border-radius: 8px; padding: 0.75rem 1rem; color: #313748;">
+      ⚠️ Esta oferta ya no está activa (vista por última vez el {current.published_date}). Mirá las <a href="/">ofertas de hoy</a>.
+    </p>
+  )}
+
+  <p style="font-size: 1.5rem; margin: 1rem 0 0.25rem;">
+    <span style="color: #FF6316; font-weight: 800;">{money(current.price_after)}</span>
+    {' '}<span style="text-decoration: line-through; color: #888; font-size: 1rem;">{money(current.price_before)}</span>
+    {' '}<span style="color: #FF6316; font-weight: 700; font-size: 1rem;">{current.discount_pct}% OFF</span>
+  </p>
+  {current.installments_text && <p>{current.installments_text}</p>}
+  {current.rating && current.sold_text && <p>⭐ {current.rating}/5 · {current.sold_text}</p>}
+
+  {isActive && (
+    <a
+      href={current.affiliate_link}
+      rel="nofollow sponsored"
+      target="_blank"
+      style="display: inline-block; margin-top: 1rem; background: #FF6316; color: white; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;"
+    >
+      Ver oferta en Mercado Libre
+    </a>
+  )}
+
+  {past.length > 0 && (
+    <section style="margin-top: 2rem;">
+      <h2>Historial de precios</h2>
+      <ul>
+        {past.map((p) => (
+          <li>{p.published_date}: {money(p.price_after)} ({p.discount_pct}% OFF)</li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

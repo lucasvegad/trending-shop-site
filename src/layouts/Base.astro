@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  canonicalPath?: string;
+}
+const { title, description, noindex = false, canonicalPath } = Astro.props;
+const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefined;
+---
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+    <style>
+      :root {
+        --orange: #FF6316;
+        --navy: #0F172A;
+        --slate: #313748;
+        --offwhite: #F7F5F2;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, "Segoe UI", Inter, sans-serif;
+        background: var(--offwhite);
+        color: var(--navy);
+      }
+      header {
+        padding: 1.25rem 1.5rem;
+        background: var(--navy);
+        color: white;
+      }
+      header a {
+        color: white;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1.25rem;
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem;
+      }
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--slate);
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header><a href="/">Trending Shop</a></header>
+    <main>
+      <slot />
+    </main>
+    <footer>Trending Shop — ofertas reales de Mercado Libre Argentina. Los links son de afiliado.</footer>
+  </body>
+</html>
