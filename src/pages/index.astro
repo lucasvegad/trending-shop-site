@@ -14,11 +14,13 @@ const offers = ofertasData.offers as Array<{
   sold_text: string | null;
   affiliate_link: string;
   trending: boolean;
+  category: string;
   published_date: string;
 }>;
 
 const latestDate = offers[0]?.published_date;
 const todayOffers = offers.filter((o) => o.published_date === latestDate);
+const categories = [...new Set(todayOffers.map((o) => o.category))].sort();
 
 const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
 ---
@@ -28,14 +30,25 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
   noindex={true}
 >
   <h1>Ofertas de hoy{latestDate ? ` (${latestDate})` : ''}</h1>
+
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Buscar producto..." aria-label="Buscar producto" />
+    <select id="category-filter" aria-label="Filtrar por categoría">
+      <option value="">Todas las categorías</option>
+      {categories.map((c) => <option value={c}>{c}</option>)}
+    </select>
+  </div>
+
   {todayOffers.length === 0 && <p>Todavía no hay ofertas publicadas.</p>}
-  <div class="grid">
+
+  <div class="grid" id="offers-grid">
     {todayOffers.map((o) => (
-      <a href={`/oferta/${o.product_id}`} class="card">
+      <a href={`/oferta/${o.product_id}`} class="card" data-title={o.title.toLowerCase()} data-category={o.category}>
         <div class="thumb">
-          {o.image_url && <img src={o.image_url} alt={o.title} />}
+          {o.image_url && <img src={o.image_url} alt={o.title} loading="lazy" />}
           <span class="badge">{o.discount_pct}% OFF</span>
         </div>
+        <p class="category-tag">{o.category}</p>
         <p class="title">{o.title}</p>
         <p class="price">
           <span class="price-now">{money(o.price_after)}</span>
@@ -44,14 +57,39 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
       </a>
     ))}
   </div>
+  <p id="no-results" class="no-results" hidden>No encontramos ofertas con ese filtro.</p>
 </Base>
 
 <style>
+  .toolbar {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+  .toolbar input,
+  .toolbar select {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    color: #0F172A;
+  }
+  .toolbar input {
+    flex: 1;
+    min-width: 200px;
+  }
+  .toolbar input:focus,
+  .toolbar select:focus {
+    outline: 2px solid #FF6316;
+    outline-offset: 1px;
+  }
   .grid {
     display: grid;
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    margin-top: 1.5rem;
   }
   .card {
     text-decoration: none;
@@ -90,9 +128,17 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     border-radius: 999px;
     box-shadow: 0 2px 6px rgba(255, 99, 22, 0.4);
   }
+  .category-tag {
+    margin: 0.75rem 0 0;
+    color: #313748;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
   .title {
     font-weight: 600;
-    margin: 0.75rem 0 0.35rem;
+    margin: 0.25rem 0 0.35rem;
     line-height: 1.3;
   }
   .price {
@@ -109,4 +155,35 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     color: #888;
     font-size: 0.85rem;
   }
+  .no-results {
+    text-align: center;
+    color: #313748;
+    padding: 2rem 0;
+  }
 </style>
+
+<script>
+  const searchInput = document.getElementById('search') as HTMLInputElement;
+  const categorySelect = document.getElementById('category-filter') as HTMLSelectElement;
+  const cards = Array.from(document.querySelectorAll<HTMLAnchorElement>('.card'));
+  const noResults = document.getElementById('no-results') as HTMLElement;
+
+  function applyFilters() {
+    const query = searchInput.value.trim().toLowerCase();
+    const category = categorySelect.value;
+    let visibleCount = 0;
+
+    for (const card of cards) {
+      const matchesQuery = !query || card.dataset.title?.includes(query);
+      const matchesCategory = !category || card.dataset.category === category;
+      const visible = Boolean(matchesQuery && matchesCategory);
+      card.hidden = !visible;
+      if (visible) visibleCount++;
+    }
+
+    noResults.hidden = visibleCount > 0;
+  }
+
+  searchInput?.addEventListener('input', applyFilters);
+  categorySelect?.addEventListener('change', applyFilters);
+</script>
