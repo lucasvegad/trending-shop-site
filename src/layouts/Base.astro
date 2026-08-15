@@ -34,8 +34,12 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
       body {
         margin: 0;
         font-family: var(--font-text);
-        background: var(--offwhite);
         color: var(--navy);
+        background:
+          radial-gradient(ellipse 900px 500px at 15% -10%, #FFE4D2 0%, transparent 60%),
+          radial-gradient(ellipse 700px 500px at 100% 0%, #FFD9C2 0%, transparent 55%),
+          var(--offwhite);
+        background-attachment: fixed;
       }
       h1, h2 {
         font-family: var(--font-display);
@@ -47,6 +51,7 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
         display: flex;
         align-items: center;
         gap: 0.6rem;
+        box-shadow: 0 2px 12px rgba(15, 23, 42, 0.25);
       }
       header a {
         color: white;
@@ -63,11 +68,12 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
         height: 36px;
         border-radius: 50%;
         background: var(--orange);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
       }
       main {
         max-width: 900px;
         margin: 0 auto;
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
       }
       footer {
         text-align: center;

@@ -29,17 +29,84 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
 >
   <h1>Ofertas de hoy{latestDate ? ` (${latestDate})` : ''}</h1>
   {todayOffers.length === 0 && <p>Todavía no hay ofertas publicadas.</p>}
-  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+  <div class="grid">
     {todayOffers.map((o) => (
-      <a href={`/oferta/${o.product_id}`} style="text-decoration: none; color: inherit; border: 1px solid #e2e2e2; border-radius: 12px; padding: 1rem; display: block; background: white;">
-        {o.image_url && <img src={o.image_url} alt={o.title} style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px;" />}
-        <p style="font-weight: 600; margin: 0.5rem 0 0.25rem;">{o.title}</p>
-        <p style="margin: 0;">
-          <span style="font-family: 'Baloo 2', sans-serif; color: #FF6316; font-weight: 800; font-size: 1.2rem;">{money(o.price_after)}</span>
-          {' '}<span style="text-decoration: line-through; color: #888; font-size: 0.85rem;">{money(o.price_before)}</span>
+      <a href={`/oferta/${o.product_id}`} class="card">
+        <div class="thumb">
+          {o.image_url && <img src={o.image_url} alt={o.title} />}
+          <span class="badge">{o.discount_pct}% OFF</span>
+        </div>
+        <p class="title">{o.title}</p>
+        <p class="price">
+          <span class="price-now">{money(o.price_after)}</span>
+          {' '}<span class="price-before">{money(o.price_before)}</span>
         </p>
-        <p style="margin: 0.25rem 0 0; font-family: 'Baloo 2', sans-serif; color: #FF6316; font-weight: 700;">{o.discount_pct}% OFF</p>
       </a>
     ))}
   </div>
 </Base>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    margin-top: 1.5rem;
+  }
+  .card {
+    text-decoration: none;
+    color: inherit;
+    border-radius: 14px;
+    padding: 1rem;
+    display: block;
+    background: white;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 20px rgba(15, 23, 42, 0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(15, 23, 42, 0.1), 0 16px 32px rgba(255, 99, 22, 0.15);
+  }
+  .thumb {
+    position: relative;
+  }
+  .thumb img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+  .badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: #FF6316;
+    color: white;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(255, 99, 22, 0.4);
+  }
+  .title {
+    font-weight: 600;
+    margin: 0.75rem 0 0.35rem;
+    line-height: 1.3;
+  }
+  .price {
+    margin: 0;
+  }
+  .price-now {
+    font-family: 'Baloo 2', sans-serif;
+    color: #FF6316;
+    font-weight: 800;
+    font-size: 1.2rem;
+  }
+  .price-before {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.85rem;
+  }
+</style>
