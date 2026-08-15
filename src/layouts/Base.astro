@@ -17,7 +17,7 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     {canonicalURL && <link rel="canonical" href={canonicalURL} />}
-    <link rel="icon" href="/bolsi.png" />
+    <link rel="icon" href="/logo.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -76,10 +76,62 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
         padding: 2rem 1.5rem;
       }
       footer {
-        text-align: center;
-        padding: 2rem 1rem;
-        color: var(--slate);
+        background: var(--navy);
+        color: rgba(255, 255, 255, 0.7);
+        padding: 2.5rem 1.5rem 1.5rem;
+        margin-top: 2rem;
+      }
+      .footer-grid {
+        max-width: 900px;
+        margin: 0 auto;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .footer-grid h3 {
+        color: white;
+        font-family: var(--font-display);
+        font-size: 0.95rem;
+        margin: 0 0 0.75rem;
+      }
+      .footer-grid ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .footer-grid li {
+        margin-bottom: 0.5rem;
+      }
+      .footer-grid a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      .footer-grid a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+      .footer-tagline {
         font-size: 0.85rem;
+        margin: 0;
+        line-height: 1.5;
+      }
+      .footer-signature {
+        max-width: 900px;
+        margin: 2rem auto 0;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.8rem;
+      }
+      .footer-signature img {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: white;
+        padding: 3px;
       }
     </style>
   </head>
@@ -88,6 +140,36 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
     <main>
       <slot />
     </main>
-    <footer>Trending Shop — ofertas reales de Mercado Libre Argentina. Los links son de afiliado.</footer>
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <h3>Trending Shop</h3>
+          <p class="footer-tagline">Ofertas reales de Mercado Libre Argentina, con descuento verificado, todos los días.</p>
+        </div>
+        <div>
+          <h3>Categorías</h3>
+          <ul>
+            <li><a href="/?categoria=Tecnología">Tecnología</a></li>
+            <li><a href="/?categoria=Hogar">Hogar</a></li>
+            <li><a href="/?categoria=Salud y Belleza">Salud y Belleza</a></li>
+            <li><a href="/?categoria=Deportes y Fitness">Deportes y Fitness</a></li>
+            <li><a href="/?categoria=Moda">Moda</a></li>
+            <li><a href="/?categoria=Juguetes y Hobbies">Juguetes y Hobbies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/terminos">Términos de uso</a></li>
+            <li><a href="/privacidad">Privacidad</a></li>
+            <li><a href="/sobre-afiliados">Sobre los links de afiliado</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-signature">
+        <img src="/logo.jpg" alt="Trending Shop" />
+        <span>© {new Date().getFullYear()} Trending Shop — todos los derechos reservados.</span>
+      </div>
+    </footer>
   </body>
 </html>

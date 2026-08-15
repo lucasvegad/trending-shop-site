@@ -19,8 +19,11 @@ const offers = ofertasData.offers as Array<{
 }>;
 
 const latestDate = offers[0]?.published_date;
-const todayOffers = offers.filter((o) => o.published_date === latestDate);
+const todayOffers = offers
+  .filter((o) => o.published_date === latestDate)
+  .sort((a, b) => b.discount_pct - a.discount_pct);
 const categories = [...new Set(todayOffers.map((o) => o.category))].sort();
+const bestDealId = todayOffers[0]?.product_id;
 
 const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
 ---
@@ -46,14 +49,20 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
       <a href={`/oferta/${o.product_id}`} class="card" data-title={o.title.toLowerCase()} data-category={o.category}>
         <div class="thumb">
           {o.image_url && <img src={o.image_url} alt={o.title} loading="lazy" />}
-          <span class="badge">{o.discount_pct}% OFF</span>
+          {o.product_id === bestDealId
+            ? <span class="badge badge-gold">★ MEJOR PRECIO</span>
+            : <span class="badge">{o.discount_pct}% OFF</span>}
         </div>
-        <p class="category-tag">{o.category}</p>
+        <p class="tags">
+          <span class="category-tag">{o.category}</span>
+          {o.trending && <span class="trending-tag">🔥 Tendencia</span>}
+        </p>
         <p class="title">{o.title}</p>
         <p class="price">
           <span class="price-now">{money(o.price_after)}</span>
           {' '}<span class="price-before">{money(o.price_before)}</span>
         </p>
+        {o.rating && <p class="rating">★ {o.rating}/5</p>}
       </a>
     ))}
   </div>
@@ -128,17 +137,37 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     border-radius: 999px;
     box-shadow: 0 2px 6px rgba(255, 99, 22, 0.4);
   }
-  .category-tag {
+  .badge-gold {
+    background: #FFC145;
+    color: #0F172A;
+    box-shadow: 0 2px 6px rgba(255, 193, 69, 0.5);
+  }
+  .tags {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     margin: 0.75rem 0 0;
+    flex-wrap: wrap;
+  }
+  .category-tag {
     color: #313748;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-weight: 600;
   }
+  .trending-tag {
+    background: #DCFCE7;
+    color: #16A34A;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+  }
   .title {
     font-weight: 600;
-    margin: 0.25rem 0 0.35rem;
+    margin: 0.35rem 0 0.35rem;
     line-height: 1.3;
   }
   .price {
@@ -154,6 +183,12 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     text-decoration: line-through;
     color: #888;
     font-size: 0.85rem;
+  }
+  .rating {
+    margin: 0.35rem 0 0;
+    color: #C9930C;
+    font-size: 0.8rem;
+    font-weight: 700;
   }
   .no-results {
     text-align: center;
@@ -184,6 +219,12 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     noResults.hidden = visibleCount > 0;
   }
 
+  const presetCategory = new URLSearchParams(window.location.search).get('categoria');
+  if (presetCategory) {
+    categorySelect.value = presetCategory;
+  }
+
   searchInput?.addEventListener('input', applyFilters);
   categorySelect?.addEventListener('change', applyFilters);
+  applyFilters();
 </script>
