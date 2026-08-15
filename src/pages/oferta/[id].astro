@@ -56,9 +56,9 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     </p>
   )}
 
-  <p style="font-size: 1.5rem; margin: 1rem 0 0.25rem;">
+  <p style="font-family: 'Baloo 2', sans-serif; font-size: 1.5rem; margin: 1rem 0 0.25rem;">
     <span style="color: #FF6316; font-weight: 800;">{money(current.price_after)}</span>
-    {' '}<span style="text-decoration: line-through; color: #888; font-size: 1rem;">{money(current.price_before)}</span>
+    {' '}<span style="text-decoration: line-through; color: #888; font-size: 1rem; font-family: 'Inter', sans-serif;">{money(current.price_before)}</span>
     {' '}<span style="color: #FF6316; font-weight: 700; font-size: 1rem;">{current.discount_pct}% OFF</span>
   </p>
   {current.installments_text && <p>{current.installments_text}</p>}

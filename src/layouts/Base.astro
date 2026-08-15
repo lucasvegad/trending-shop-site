@@ -17,30 +17,52 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+    <link rel="icon" href="/bolsi.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
       :root {
         --orange: #FF6316;
         --navy: #0F172A;
         --slate: #313748;
         --offwhite: #F7F5F2;
+        --font-display: "Baloo 2", sans-serif;
+        --font-text: "Inter", -apple-system, "Segoe UI", sans-serif;
       }
       * { box-sizing: border-box; }
       body {
         margin: 0;
-        font-family: -apple-system, "Segoe UI", Inter, sans-serif;
+        font-family: var(--font-text);
         background: var(--offwhite);
         color: var(--navy);
       }
+      h1, h2 {
+        font-family: var(--font-display);
+        font-weight: 800;
+      }
       header {
-        padding: 1.25rem 1.5rem;
+        padding: 1rem 1.5rem;
         background: var(--navy);
-        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
       }
       header a {
         color: white;
         text-decoration: none;
-        font-weight: 800;
-        font-size: 1.25rem;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.35rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      header img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--orange);
       }
       main {
         max-width: 900px;
@@ -56,7 +78,7 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
     </style>
   </head>
   <body>
-    <header><a href="/">Trending Shop</a></header>
+    <header><a href="/"><img src="/bolsi.png" alt="Bolsi, la mascota de Trending Shop" />Trending Shop</a></header>
     <main>
       <slot />
     </main>
