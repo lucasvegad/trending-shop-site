@@ -1,4 +1,6 @@
 ---
+import { getActiveCategories } from '../lib/data';
+
 interface Props {
   title: string;
   description: string;
@@ -7,6 +9,7 @@ interface Props {
 }
 const { title, description, noindex = false, canonicalPath } = Astro.props;
 const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefined;
+const footerCategories = getActiveCategories();
 ---
 <!doctype html>
 <html lang="es-AR">
@@ -27,6 +30,9 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
         --navy: #0F172A;
         --slate: #313748;
         --offwhite: #F7F5F2;
+        --gold: #FFC145;
+        --green: #16A34A;
+        --green-bg: #DCFCE7;
         --font-display: "Baloo 2", sans-serif;
         --font-text: "Inter", -apple-system, "Segoe UI", sans-serif;
       }
@@ -149,12 +155,7 @@ const canonicalURL = canonicalPath ? new URL(canonicalPath, Astro.site) : undefi
         <div>
           <h3>Categorías</h3>
           <ul>
-            <li><a href="/?categoria=Tecnología">Tecnología</a></li>
-            <li><a href="/?categoria=Hogar">Hogar</a></li>
-            <li><a href="/?categoria=Salud y Belleza">Salud y Belleza</a></li>
-            <li><a href="/?categoria=Deportes y Fitness">Deportes y Fitness</a></li>
-            <li><a href="/?categoria=Moda">Moda</a></li>
-            <li><a href="/?categoria=Juguetes y Hobbies">Juguetes y Hobbies</a></li>
+            {footerCategories.map((c) => <li><a href={`/?categoria=${encodeURIComponent(c)}`}>{c}</a></li>)}
           </ul>
         </div>
         <div>

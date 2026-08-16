@@ -1,0 +1,87 @@
+---
+import Badge from './Badge.astro';
+import RatingStars from './RatingStars.astro';
+import PriceBlock from './PriceBlock.astro';
+import type { Offer } from '../lib/types';
+
+interface Props {
+  offer: Offer;
+  isBestDeal: boolean;
+}
+const { offer, isBestDeal } = Astro.props;
+---
+
+<a href={`/oferta/${offer.product_id}`} class="offer-card" data-title={offer.title.toLowerCase()} data-category={offer.category}>
+  <div class="thumb">
+    {offer.image_url && <img src={offer.image_url} alt={offer.title} loading="lazy" />}
+    <div class="badge-overlay">
+      {isBestDeal
+        ? <Badge variant="gold" label="★ MEJOR PRECIO" />
+        : <Badge variant="orange" label={`${offer.discount_pct}% OFF`} />}
+    </div>
+  </div>
+  <p class="tags">
+    <span class="category-tag">{offer.category}</span>
+    {offer.trending && <Badge variant="green" size="sm" label="🔥 Tendencia" />}
+  </p>
+  <p class="title">{offer.title}</p>
+  <PriceBlock
+    priceAfter={offer.price_after}
+    priceBefore={offer.price_before}
+    discountPct={offer.discount_pct}
+    installmentsText={offer.installments_text}
+    size="card"
+  />
+  <RatingStars rating={offer.rating} soldText={offer.sold_text} />
+</a>
+
+<style>
+  .offer-card {
+    text-decoration: none;
+    color: inherit;
+    border-radius: 14px;
+    padding: 0.85rem;
+    display: block;
+    background: white;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 20px rgba(15, 23, 42, 0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .offer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(15, 23, 42, 0.1), 0 16px 32px rgba(255, 99, 22, 0.15);
+  }
+  .thumb {
+    position: relative;
+  }
+  .thumb img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+  .badge-overlay {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+  .tags {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.75rem 0 0;
+    flex-wrap: wrap;
+  }
+  .category-tag {
+    color: var(--slate, #313748);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .title {
+    font-weight: 600;
+    margin: 0.35rem 0 0.35rem;
+    line-height: 1.3;
+  }
+</style>

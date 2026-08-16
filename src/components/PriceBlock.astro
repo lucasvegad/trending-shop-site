@@ -1,0 +1,60 @@
+---
+import { money } from '../lib/format';
+
+interface Props {
+  priceAfter: number;
+  priceBefore: number;
+  discountPct: number;
+  installmentsText?: string | null;
+  size?: 'card' | 'detail';
+}
+const { priceAfter, priceBefore, discountPct, installmentsText, size = 'card' } = Astro.props;
+---
+
+<div class:list={['price-block', `price-block-${size}`]}>
+  <p class="price-line">
+    <span class="price-now">{money(priceAfter)}</span>
+    <span class="price-before">{money(priceBefore)}</span>
+    <span class="discount-chip">{discountPct}% OFF</span>
+  </p>
+  {installmentsText && <p class="installments">{installmentsText}</p>}
+</div>
+
+<style>
+  .price-block {
+    margin: 0;
+  }
+  .price-line {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .price-now {
+    font-family: 'Baloo 2', sans-serif;
+    color: var(--orange);
+    font-weight: 800;
+  }
+  .price-block-card .price-now {
+    font-size: 1.2rem;
+  }
+  .price-block-detail .price-now {
+    font-size: 1.75rem;
+  }
+  .price-before {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.85rem;
+  }
+  .discount-chip {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+  .installments {
+    margin: 0.2rem 0 0;
+    font-size: 0.8rem;
+    color: var(--slate, #313748);
+  }
+</style>

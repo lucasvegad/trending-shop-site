@@ -1,31 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import ofertasData from '../data/ofertas.json';
+import OfferCard from '../components/OfferCard.astro';
+import { getTodayOffers, getActiveCategories, getLatestDate } from '../lib/data';
 
-const offers = ofertasData.offers as Array<{
-  product_id: string;
-  title: string;
-  image_url: string | null;
-  discount_pct: number;
-  price_before: number;
-  price_after: number;
-  installments_text: string | null;
-  rating: number | null;
-  sold_text: string | null;
-  affiliate_link: string;
-  trending: boolean;
-  category: string;
-  published_date: string;
-}>;
-
-const latestDate = offers[0]?.published_date;
-const todayOffers = offers
-  .filter((o) => o.published_date === latestDate)
-  .sort((a, b) => b.discount_pct - a.discount_pct);
-const categories = [...new Set(todayOffers.map((o) => o.category))].sort();
+const latestDate = getLatestDate();
+const todayOffers = getTodayOffers().sort((a, b) => b.discount_pct - a.discount_pct);
+const categories = getActiveCategories();
 const bestDealId = todayOffers[0]?.product_id;
-
-const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
 ---
 <Base
   title="Trending Shop — Ofertas de Mercado Libre Argentina"
@@ -46,24 +27,7 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
 
   <div class="grid" id="offers-grid">
     {todayOffers.map((o) => (
-      <a href={`/oferta/${o.product_id}`} class="card" data-title={o.title.toLowerCase()} data-category={o.category}>
-        <div class="thumb">
-          {o.image_url && <img src={o.image_url} alt={o.title} loading="lazy" />}
-          {o.product_id === bestDealId
-            ? <span class="badge badge-gold">★ MEJOR PRECIO</span>
-            : <span class="badge">{o.discount_pct}% OFF</span>}
-        </div>
-        <p class="tags">
-          <span class="category-tag">{o.category}</span>
-          {o.trending && <span class="trending-tag">🔥 Tendencia</span>}
-        </p>
-        <p class="title">{o.title}</p>
-        <p class="price">
-          <span class="price-now">{money(o.price_after)}</span>
-          {' '}<span class="price-before">{money(o.price_before)}</span>
-        </p>
-        {o.rating && <p class="rating">★ {o.rating}/5</p>}
-      </a>
+      <OfferCard offer={o} isBestDeal={o.product_id === bestDealId} />
     ))}
   </div>
   <p id="no-results" class="no-results" hidden>No encontramos ofertas con ese filtro.</p>
@@ -100,96 +64,6 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
-  .card {
-    text-decoration: none;
-    color: inherit;
-    border-radius: 14px;
-    padding: 1rem;
-    display: block;
-    background: white;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 20px rgba(15, 23, 42, 0.06);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(15, 23, 42, 0.1), 0 16px 32px rgba(255, 99, 22, 0.15);
-  }
-  .thumb {
-    position: relative;
-  }
-  .thumb img {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 10px;
-    display: block;
-  }
-  .badge {
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    background: #FF6316;
-    color: white;
-    font-family: 'Baloo 2', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-    box-shadow: 0 2px 6px rgba(255, 99, 22, 0.4);
-  }
-  .badge-gold {
-    background: #FFC145;
-    color: #0F172A;
-    box-shadow: 0 2px 6px rgba(255, 193, 69, 0.5);
-  }
-  .tags {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0.75rem 0 0;
-    flex-wrap: wrap;
-  }
-  .category-tag {
-    color: #313748;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: 600;
-  }
-  .trending-tag {
-    background: #DCFCE7;
-    color: #16A34A;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-  }
-  .title {
-    font-weight: 600;
-    margin: 0.35rem 0 0.35rem;
-    line-height: 1.3;
-  }
-  .price {
-    margin: 0;
-  }
-  .price-now {
-    font-family: 'Baloo 2', sans-serif;
-    color: #FF6316;
-    font-weight: 800;
-    font-size: 1.2rem;
-  }
-  .price-before {
-    text-decoration: line-through;
-    color: #888;
-    font-size: 0.85rem;
-  }
-  .rating {
-    margin: 0.35rem 0 0;
-    color: #C9930C;
-    font-size: 0.8rem;
-    font-weight: 700;
-  }
   .no-results {
     text-align: center;
     color: #313748;
@@ -200,7 +74,7 @@ const money = (n: number) => n.toLocaleString('es-AR', { style: 'currency', curr
 <script>
   const searchInput = document.getElementById('search') as HTMLInputElement;
   const categorySelect = document.getElementById('category-filter') as HTMLSelectElement;
-  const cards = Array.from(document.querySelectorAll<HTMLAnchorElement>('.card'));
+  const cards = Array.from(document.querySelectorAll<HTMLAnchorElement>('.offer-card'));
   const noResults = document.getElementById('no-results') as HTMLElement;
 
   function applyFilters() {

@@ -1,0 +1,54 @@
+---
+import { starFillPercent } from '../lib/format';
+
+interface Props {
+  rating: number | null;
+  soldText?: string | null;
+}
+const { rating, soldText } = Astro.props;
+const fillPercent = rating ? starFillPercent(rating) : 0;
+---
+
+{rating && (
+  <p class="rating-row">
+    <span class="stars" style={{ '--fill': `${fillPercent}%` }} aria-label={`${rating} de 5 estrellas`}>★★★★★</span>
+    <span class="rating-value">{rating}</span>
+    {soldText && <span class="sold-text">· {soldText}</span>}
+  </p>
+)}
+
+<style>
+  .rating-row {
+    margin: 0.35rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+  }
+  .stars {
+    position: relative;
+    display: inline-block;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: #E0E0E0;
+    letter-spacing: 1px;
+  }
+  .stars::before {
+    content: '★★★★★';
+    position: absolute;
+    inset: 0;
+    width: var(--fill);
+    overflow: hidden;
+    color: #C9930C;
+    white-space: nowrap;
+  }
+  .rating-value {
+    font-weight: 700;
+    color: #C9930C;
+  }
+  .sold-text {
+    color: var(--slate, #313748);
+    opacity: 0.8;
+  }
+</style>
