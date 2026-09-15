@@ -1,6 +1,51 @@
 {
   "offers": [
     {
+      "product_id": "MLA66560428",
+      "title": "Sommier 2 Plazas Y Colchón Multiflex Confort Espuma Media Densidad 130x190cm",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-09-15/MLA66560428.jpg",
+      "rating": 4.6,
+      "sold_text": "+5mil vendidos",
+      "discount_pct": 70,
+      "price_before": 951940,
+      "price_after": 276870,
+      "installments_text": "6 cuotas de $ 62.291",
+      "affiliate_link": "https://meli.la/2KcDxfU",
+      "trending": false,
+      "published_date": "2026-09-15",
+      "category": "Hogar"
+    },
+    {
+      "product_id": "MLA75829122",
+      "title": "Balanza Digital con Bluetooth Femmto BCS13 para Baño Medidor de Grasa Corporal y Masa Muscular",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-09-15/MLA75829122.jpg",
+      "rating": 4.8,
+      "sold_text": "+50mil vendidos",
+      "discount_pct": 57,
+      "price_before": 53999,
+      "price_after": 22988,
+      "installments_text": null,
+      "affiliate_link": "https://meli.la/2sFCFCK",
+      "trending": false,
+      "published_date": "2026-09-15",
+      "category": "Tecnología"
+    },
+    {
+      "product_id": "MLA19771770",
+      "title": "Eucerin ANTI-PIGMENT Serum facial Ultra-Light Todo tipo de piel x 30 ml",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-09-15/MLA19771770.jpg",
+      "rating": 4.7,
+      "sold_text": "+1000 vendidos",
+      "discount_pct": 52,
+      "price_before": 167053,
+      "price_after": 78653,
+      "installments_text": "6 cuotas de $ 17.695",
+      "affiliate_link": "https://meli.la/16rZqry",
+      "trending": false,
+      "published_date": "2026-09-15",
+      "category": "Otros"
+    },
+    {
       "product_id": "MLA38465716",
       "title": "Aspiradora De Mano Portátil Gadnic 9000Pa Batería Duradera Auto y Hogar 120W",
       "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-09-14/MLA38465716.jpg",
@@ -74,6 +119,21 @@
       "trending": true,
       "published_date": "2026-09-14",
       "category": "Hogar"
+    },
+    {
+      "product_id": "MLA19600569",
+      "title": "Plancha a Vapor Vertical Gadnic 1800W Ruedas Depósito 1.3 Litros Ideal para Ropa y Telas Delicadas Violeta",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-09-14/MLA19600569.jpg",
+      "rating": 4.6,
+      "sold_text": "+10mil vendidos",
+      "discount_pct": 59,
+      "price_before": 230049,
+      "price_after": 92749,
+      "installments_text": "6 cuotas de $ 20.866",
+      "affiliate_link": "https://meli.la/1zdJccw",
+      "trending": false,
+      "published_date": "2026-09-14",
+      "category": "Otros"
     },
     {
       "product_id": "MLAU3807930103",
