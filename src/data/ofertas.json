@@ -1,6 +1,51 @@
 {
   "offers": [
     {
+      "product_id": "MLA6066373",
+      "title": "Secarropas Por Calor Axel Ax-3000 Con Sistema Anti-arrugas Blanco",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-10-16/MLA6066373.jpg",
+      "rating": 4.7,
+      "sold_text": "+10mil vendidos",
+      "discount_pct": 39,
+      "price_before": 226799,
+      "price_after": 138224,
+      "installments_text": null,
+      "affiliate_link": "https://meli.la/2WYafnG",
+      "trending": false,
+      "published_date": "2026-10-16",
+      "category": "Otros"
+    },
+    {
+      "product_id": "MLA74504869",
+      "title": "Notebook Asus Vivobook Go 15 Ryzen 5 8gb 512gb W11",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-10-16/MLA74504869.jpg",
+      "rating": 4.9,
+      "sold_text": "+1000 vendidos",
+      "discount_pct": 60,
+      "price_before": 2349999,
+      "price_after": 939999,
+      "installments_text": null,
+      "affiliate_link": "https://meli.la/2Wt571a",
+      "trending": true,
+      "published_date": "2026-10-16",
+      "category": "Tecnología"
+    },
+    {
+      "product_id": "MLA27703693",
+      "title": "Asiento Masajeador Gadnic Mat Massager 10 Motores 5 Modos Terapia de Calor",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-10-15/MLA27703693.jpg",
+      "rating": 4.6,
+      "sold_text": "+5mil vendidos",
+      "discount_pct": 48,
+      "price_before": 271149,
+      "price_after": 140249,
+      "installments_text": null,
+      "affiliate_link": "https://meli.la/1iGGJsT",
+      "trending": false,
+      "published_date": "2026-10-15",
+      "category": "Otros"
+    },
+    {
       "product_id": "MLA19695532",
       "title": "Aire acondicionado split frio y calor Philco PHS32HA4CNE 2900F 3400W color blanco",
       "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-10-15/MLA19695532.jpg",
@@ -222,6 +267,21 @@
       "installments_text": null,
       "affiliate_link": "https://meli.la/2eioBfP",
       "trending": false,
+      "published_date": "2026-10-13",
+      "category": "Otros"
+    },
+    {
+      "product_id": "MLA63982891",
+      "title": "Pava Eléctrica Digital Novohome 2 Litros Pantalla Tactil Color Negro Acero Inoxidable Gran",
+      "image_url": "https://raw.githubusercontent.com/lucasvegad/trending-shop-assets/main/2026-10-13/MLA63982891.jpg",
+      "rating": 4.7,
+      "sold_text": "+10mil vendidos",
+      "discount_pct": 43,
+      "price_before": 85990,
+      "price_after": 48225,
+      "installments_text": null,
+      "affiliate_link": "https://meli.la/1J2z1WT",
+      "trending": true,
       "published_date": "2026-10-13",
       "category": "Otros"
     },
